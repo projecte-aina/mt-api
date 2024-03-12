@@ -1,24 +1,23 @@
-version: '3.7'
+version: '3.9'
 
 services:
   mt:
-    build:
-      context: .
-      dockerfile: ./compose/dev/app/Dockerfile
-      # dockerfile: ./compose/dev/app/Dockerfile-gpu
-    image: twb_mt_dev
-    command: /start.sh
+    image: projecteaina/mt-api:v1_ca_es
     restart: unless-stopped
     # runtime: nvidia  # Comment out in local
     ports:
-      - 8001:8000
+      - 8000:8000
     volumes:
       - .:/app
-      - /translation-models:/models
-    env_file:
-      - .env/.dev
-    depends_on:
-      - redis
+      # - ./models:/app/models
+      - ./config.json:/app/config.json
+    environment:
+      - MT_API_CONFIG=/app/config.json
+      # - MT_API_DEVICE=gpu #or gpu, if so make runtime:nvidia
+      - MT_API_THREADS=16
+      - MODELS_ROOT=/app/models
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
 
   redis:
     image: redis:6-alpine

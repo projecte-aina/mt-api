@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 from app.helpers.config import Config
 from . import tasks
 
@@ -7,6 +7,7 @@ from . import tasks
 def create_app() -> FastAPI:
     app = FastAPI()
 
+<<<<<<< HEAD
     from app.logging import configure_logging
 
     configure_logging()
@@ -14,6 +15,15 @@ def create_app() -> FastAPI:
     from app.celery_utils import create_celery
 
     app.celery_app = create_celery()
+=======
+    app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], #origins when origins is set
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+>>>>>>> main
 
     from app.views.v1.translate import translate_v1
 

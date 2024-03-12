@@ -19,13 +19,19 @@ from app.utils.tokenizers import (
 from app.utils.translators import (
     get_batch_ctranslator,
     get_batch_opustranslator,
+    get_batch_opusbigtranslator,
+    get_batch_nllbtranslator,
+    get_batch_m2m100translator,
     dummy_translator,
+    get_custom_translator,
 )
 from app.utils.utils import (
     capitalizer,
     lowercaser,
 )
 
+from app.settings import DEFAULT_NLLB_MODEL_TYPE, DEFAULT_M2M100_MODEL_TYPE
+from app.constants import NLLB_CHECKPOINT_IDS, M2M100_CHECKPOINT_IDS
 
 def load_model_sentence_segmenter(
     model: Dict,
@@ -185,18 +191,73 @@ def load_model_translator(
                 model['src'], model['tgt']
             )
             if opus_translator:
-                model['translator'] = get_batch_opustranslator(
-                    model['src'], model['tgt']
-                )
+                model['translator'] = opus_translator
                 msg += '-opus-huggingface'
             else:
                 warn(
                     f'Failed to load opus-huggingface model for {model_id}. Skipping load.'
                 )
                 raise ModelLoadingException
+        elif model_config['model_type'] == 'opus-big':
+            opus_translator = get_batch_opusbigtranslator(
+                model['src'], model['tgt']
+            )
+            if opus_translator:
+                model['translator'] = opus_translator
+                msg += '-opusbig-huggingface'
+            else:
+                warn(
+                    f'Failed to load opusbig-huggingface model for {model_id}. Skipping load.'
+                )
+                raise ModelLoadingException
+        elif model_config['model_type'] == 'nllb':
+            nllb_checkpoint_id = model_config.get('checkpoint_id') if 'checkpoint_id' in model_config else DEFAULT_NLLB_MODEL_TYPE
+
+            if len(model_config.get('checkpoint_id').split('/')) == 1:
+                if nllb_checkpoint_id not in NLLB_CHECKPOINT_IDS:
+                    warn(
+                        f'No checkpoint exists for base NLLB model: facebook/{nllb_checkpoint_id}. Skipping load.'
+                    )
+                    raise ModelLoadingException
+                nllb_checkpoint_id = 'facebook/' + nllb_checkpoint_id
+                warn(f'Full model id: {nllb_checkpoint_id}')
+
+            translator = get_batch_nllbtranslator(nllb_checkpoint_id, lang_map=model_config.get('lang_code_map'))
+            if translator:
+                model['translator'] = translator
+                msg += '-nllb-huggingface-' + nllb_checkpoint_id
+            else:
+                warn(
+                    f'Failed to load nllb-huggingface model for {model_id}. Skipping load.'
+                )
+                raise ModelLoadingException
+        elif model_config['model_type'] == 'm2m100':
+            m2m100_checkpoint_id = model_config.get('checkpoint_id') if 'checkpoint_id' in model_config else DEFAULT_M2M100_MODEL_TYPE
+
+            if len(model_config.get('checkpoint_id').split('/')) == 1:
+                if m2m100_checkpoint_id not in M2M100_CHECKPOINT_IDS:
+                    warn(
+                        f'No checkpoint exists for base M2M100 model: facebook/{m2m100_checkpoint_id}. Skipping load.'
+                    )
+                    raise ModelLoadingException
+                m2m100_checkpoint_id = 'facebook/' + m2m100_checkpoint_id
+                warn(f'Full model id: {m2m100_checkpoint_id}')
+
+            translator = get_batch_m2m100translator(m2m100_checkpoint_id, lang_map=model_config.get('lang_code_map'))
+            if translator:
+                model['translator'] = translator
+                msg += '-m2m100-huggingface-' + m2m100_checkpoint_id
+            else:
+                warn(
+                    f'Failed to load m2m100-huggingface model for {model_id}. Skipping load.'
+                )
+                raise ModelLoadingException
         elif model_config['model_type'] == 'dummy':
             msg += '-dummy'
             model['translator'] = dummy_translator
+        elif model_config['model_type'] == 'custom':
+            msg += '-custom'
+            model['translator'] = get_custom_translator(model_config['model_path'])
         pipeline_msg.append(msg)
     else:
         model['translator'] = None
