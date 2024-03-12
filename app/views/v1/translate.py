@@ -18,9 +18,6 @@ translate_v1 = APIRouter(prefix='/api/v1/translate')
 DEVDEBUG = True
 logger = logging.getLogger('console_logger')
 
-<<<<<<< HEAD
-@translate_v1.post('', status_code=status.HTTP_200_OK)
-=======
 def fetch_model_data_from_request(request):
     config = Config()
 
@@ -75,7 +72,6 @@ def fetch_model_data_from_request(request):
     return model_id, src, tgt
 
 @translate_v1.post("", status_code=status.HTTP_200_OK)
->>>>>>> main
 @translate_v1.post('/', status_code=status.HTTP_200_OK)
 async def translate_sentence(
     request: TranslationRequest,
@@ -104,10 +100,6 @@ async def translate_batch(
 
     return BatchTranslationResponse(translation=translated_batch)
 
-<<<<<<< HEAD
-
-=======
->>>>>>> main
 @translate_v1.get('', status_code=status.HTTP_200_OK)
 @translate_v1.get('/', status_code=status.HTTP_200_OK)
 async def languages() -> LanguagesResponse:
