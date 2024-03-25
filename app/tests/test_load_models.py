@@ -36,7 +36,7 @@ class TestLoadModels():
             }]
         }
 
-        self.config = Config(config_data=self.config_data, load_all_models=True)
+        self.config = Config(config_data=self.config_data, models_to_load=["all"])
         # languages
         assert self.config.language_codes == {
                 "es": "Spanish",
