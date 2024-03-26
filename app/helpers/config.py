@@ -24,7 +24,6 @@ class Config(metaclass=Singleton):
         self,
         config_file: Optional[str] = None,
         config_data: Optional[Dict] = None,
-        load_all_models: bool = False,
         models_to_load:list = []
     ):
         self.loaded_models: Dict = {}
@@ -33,7 +32,6 @@ class Config(metaclass=Singleton):
         self.pair_to_model_id_map: Dict = {}
         self.config_data: Dict = config_data or {}
         self.config_file: str = config_file or CONFIG_JSON_PATH
-        self.load_all_models: bool = load_all_models
         
         self.warnings: List[str] = []
         self.messages: List[str] = []
@@ -43,7 +41,7 @@ class Config(metaclass=Singleton):
             self._validate_models()
 
         self._load_language_codes()
-        self._load_models(load_all_models, models_to_load)
+        self._load_models(models_to_load)
         self._load_languages_list()
 
     def map_lang_to_closest(self, lang: str) -> str:
@@ -145,11 +143,11 @@ class Config(metaclass=Singleton):
             return False
         return True
 
-    def _load_models(self, load_all, models_to_load) -> None:
+    def _load_models(self, models_to_load) -> None:
         for model_config in self.config_data['models']:
             _, _, model_id = self._get_ser_tgt_model_id(model_config)
 
-            if not load_all and model_id not in models_to_load:
+            if 'all' not in models_to_load and model_id not in models_to_load:
                 continue
 
             # CONFIG CHECKS
