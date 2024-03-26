@@ -11,4 +11,4 @@ stop:
 	
 
 act-run-tests:
-	gh act -j run-tests -W '.github/workflows/tests.yml'
+	gh act -j test -W '.github/workflows/tests.yml'

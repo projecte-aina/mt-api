@@ -5,7 +5,6 @@ import os
 class BaseTestCase:
 
     def setup(self):
-        os.environ['MODELS_ROOT'] = "./models"
         self.app = app
         self.client = TestClient(self.app)
 
