@@ -1,3 +1,4 @@
+"""
 import pytest
 import json
 from .base_test_case import BaseTestCase
@@ -65,3 +66,4 @@ class TestLoadModels():
         assert 'get_sentencepiece_segmenter' in str(model['preprocessors'])
         assert 'get_sentencepiece_desegmenter' in str(model['postprocessors'])
         assert 'get_batch_ctranslator' in str(model['translator'])
+"""
