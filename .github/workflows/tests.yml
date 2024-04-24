@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    runs-on: docker
+    runs-on: ubuntu-latest
     steps:
       -
         name: Checkout
