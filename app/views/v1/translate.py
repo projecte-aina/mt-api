@@ -20,7 +20,6 @@ logger = logging.getLogger('console_logger')
 
 def fetch_model_data_from_request(request):
     config = Config()
-
     src = config.map_lang_to_closest(request.src)
     tgt = config.map_lang_to_closest(request.tgt)
     use_multi = True if request.use_multi == 'True' else False
