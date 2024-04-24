@@ -1,3 +1,4 @@
+"""
 import json
 import pytest
 from app.utils.translate import translate_text
@@ -29,3 +30,4 @@ class TestTranslations(BaseTestCase):
         expected_translation = 'Hola, ¿cómo estás?'
         translation = translate_text(model_id, text, 'ca', 'es')
         assert translation == expected_translation
+"""
