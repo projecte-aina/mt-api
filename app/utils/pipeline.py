@@ -285,7 +285,7 @@ def load_model_translator(
                         f'No checkpoint exists for base salamandra model: BSC-LT/{salamandra_checkpoint_id}. Skipping load.'
                     )
                     raise ModelLoadingException
-                salamandra_checkpoint_id = ('' if salamandra_checkpoint_id == "salamandraTA-7b-instruct-ACT" else 'BSC-LT/') + salamandra_checkpoint_id
+                salamandra_checkpoint_id = 'BSC-LT/' + salamandra_checkpoint_id
                 warn(f'Full model id: {salamandra_checkpoint_id}')
 
             translator = get_batch_salamandra_instruct_translator(salamandra_checkpoint_id, lang_map=model_config.get('lang_code_map'))
