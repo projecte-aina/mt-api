@@ -10,4 +10,4 @@ M2M100_CHECKPOINT_IDS = ["m2m100_418M", "m2m100_1.2B"]
 
 SALAMANDRA_CHECKPOINT_IDS = ["salamandraTA-2B"]
 
-SALAMANDRA_INSTRUCT_CHECKPOINT_IDS = ["salamandraTA-7b-instruct"]
+SALAMANDRA_INSTRUCT_CHECKPOINT_IDS = ["salamandraTA-7b-instruct", "salamandraTA-7b-instruct-ACT"]

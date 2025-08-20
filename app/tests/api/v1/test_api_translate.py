@@ -48,7 +48,8 @@ class TestTranslateApiV1(APIBaseTestCase):
                 "ga": "Irish",
                 "arn": "Aranese",
                 "arg": "Aragonese",
-                "ast": "Asturian" 
+                "ast": "Asturian",
+                "ru": "Russian"
             }
 
     def test_translate_text_valid_code(self):
