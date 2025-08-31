@@ -1,7 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG PYTHON_VERSION=3.10.12
-FROM python:${PYTHON_VERSION}-slim as base
+FROM python:3.10.12-slim AS base
 
 # Prevents Python from writing pyc files.
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -11,8 +10,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 
-ENV MT_API_CONFIG /app/config.json
-ENV MODELS_ROOT /app/models
+ENV MT_API_CONFIG=/app/config.json
+ENV MODELS_ROOT=/app/models
 
 ENV HUGGINGFACE_HUB_CACHE=/app/models \
     HF_HUB_ENABLE_HF_TRANSFER=1 \
